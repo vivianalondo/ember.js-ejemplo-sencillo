@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8>
+<title>Ingenieria web</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <script type="text/x-handlebars">
+    <div class="navbar">
+      <div class="navbar-inner">
+        <a class="brand" href="#">Ingenieria Web</a>
+        <ul class="nav">
+          <li>{{#linkTo 'posts'}}Qué es ember.js{{/linkTo}}</li>
+          <li>{{#linkTo 'estructura'}}Estructura principal framework{{/linkTo}}</li>
+        </ul>
+      </div>
+    </div>
+
+    {{outlet}}
+
+  </script>
+  
+  <script type="text/x-handlebars" data-template-name="post">
+
+    {{#if isEditing}}
+      <h3>Modo editar</h3>
+      {{partial 'post/edit'}}
+      <button {{action 'doneEditing'}}>Enviar</button>
+    {{else}}
+      <button {{action 'edit'}}>Editar</button>
+    {{/if}}
+
+    <h1>{{title}}</h1>
+    <h2>por {{author}} <small class="muted">({{date publishedAt}})</small></h2>
+    <hr>
+    <div>
+      {{markdown text}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="posts/index">
+    <p class="text-warning">Por favor, seleccione un post</p>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="post/_edit">
+    <p>{{view Ember.TextField valueBinding='title'}}</p>
+    <p>{{view Ember.TextArea valueBinding='text'}}</p>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="posts">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <table class="table">
+            <thead>
+              <tr><th>Post recientes</th></tr>
+            </thead>
+            {{#each model}}
+            <tr><td>
+              {{#linkTo 'post' this}}{{title}}{{/linkTo}} <small class="muted">por {{author}}</small>
+            </td></tr>
+            {{/each}}
+          </table>
+        </div>
+        <div class="span9">
+          {{outlet}}
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="estructura">
+    <div class="estructura">
+      <h3>Estructura del framework</h3>
+     En un ejemplo simple, nuestra aplicación se conformará de una ruta, un controller y una vista. Los nombres son algo confusos, no estamos hablando de un controller como lo tendríamos en una aplicación MVC y los modelos tampoco son el model, sino que las responsabilidades cambian bastante.
+
+    </div>
+
+    <div class="estructura">
+      <h3>Rutas</h3>
+      <strong>Explicación</strong>
+      <a href="https://www.youtube.com/watch?v=Ga99hMi7wfY&feature=youtu.be" target="_blank"> Tutorial</a>
+      <ul>
+        <li>La ruta está asociada a una serie de URLs con determinado formato (por ejemplo:/post/:post_id/comments), y la ruta será la encargada de instanciar el controlador, buscar el modelo y asignárselo. Para esto la ruta tiene sus hooks beforeModel, model, afterModel  y setupController, todos opcionales. Si model no existiera, Ember buscará un modelo post con id :post_id y eso será asignado al controlador como su propiedad model.</li>
+      </ul>
+    </div>  
+  </script>
+
+  <script src="js/libs/jquery-1.9.1.js"></script>
+  <script src="js/libs/handlebars-1.0.0-rc.3.js"></script>
+  <script src="js/libs/ember-1.0.0-rc.2.js"></script>
+  <script src="js/libs/ember-data.js"></script>
+  <script src="js/libs/showdown.js"></script>
+  <script src="js/libs/moment.js"></script>
+  <script src="js/app.js"></script>
+  
+  <script type="text/javascript">
+    var bootstrap = {
+      id:"1",
+      title: "Nodo.js",
+      author: "SVLC, OCLL, LJAM",
+      publishedAt: new Date('4-8-2013'),
+      text: "Es un entorno de ejecución para JavaScript construido con el motor de JavaScript V8 de Chrome. Node.js usa un modelo de operaciones"
+    };
+  </script>
+</body>
+</html>
